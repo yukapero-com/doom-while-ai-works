@@ -1,0 +1,9 @@
+.specstory/**
+dev/**
+src/**
+tsconfig.json
+.gitignore
+*.vsix
+patch_doom.py
+previous_DoomController.js*
+temp_state.vscdb

@@ -1,0 +1,121 @@
+{
+  "name": "doom-while-ai-works",
+  "displayName": "Doom While AI Works",
+  "description": "Play Doom while AI is thinking in VS Code, Cursor, or Antigravity.",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "publisher": "yukapero-com",
+  "author": {
+    "name": "Yukapero",
+    "url": "https://yukapero.com/en"
+  },
+  "license": "MIT",
+  "keywords": [
+    "doom",
+    "ai",
+    "cursor",
+    "vscode",
+    "antigravity",
+    "game",
+    "entertainment"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#a00000",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Yukapero/doom-for-ai-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Yukapero/doom-for-ai-chat/issues"
+  },
+  "homepage": "https://yukapero.com/en",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "doom-while-ai-works.start",
+        "title": "Start Doom (Hack)"
+      },
+      {
+        "command": "doom-while-ai-works.pause",
+        "title": "Pause Doom"
+      },
+      {
+        "command": "doom-while-ai-works.selectWad",
+        "title": "Doom While AI Works: Select WAD File"
+      },
+      {
+        "command": "doom-while-ai-works.showDebugInfo",
+        "title": "Doom While AI Works: Show Debug Info"
+      }
+    ],
+    "configuration": {
+      "title": "Doom While AI Works",
+      "properties": {
+        "doom-while-ai-works.debug": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable debug logs for detection hacks."
+        },
+        "doom-while-ai-works.game.skipTitle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Skip title screen and start directly in E1M1."
+        },
+        "doom-while-ai-works.game.wadPath": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to a custom WAD file (e.g. doom1.wad). If empty or invalid, uses built-in Freedoom."
+        },
+        "doom-while-ai-works.game.difficulty": {
+          "type": "integer",
+          "default": 3,
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Difficulty level when skipping title (1: Too young to die - 5: Nightmare!)."
+        },
+        "doom-while-ai-works.audio.volume": {
+          "type": "integer",
+          "default": 100,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Master volume (0-100)."
+        },
+        "doom-while-ai-works.audio.muted": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mute all game audio."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "npx vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "electron-rebuild": "^3.2.9",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.0"
+  }
+}
