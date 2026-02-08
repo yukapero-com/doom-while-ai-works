@@ -183,6 +183,14 @@ export class VSCodeCopilotDetector implements IAIStateDetector {
                     // We let the Activity Timeout in extension.ts handle the actual stop
                 }
             }
+
+            // Additional End Triggers (for cases where "request done" is missing but "ccreq" summary is present)
+            if (line.includes('ccreq:') && (line.includes('| success') || line.includes('| failure') || line.includes('| cancelled'))) {
+                if (this.isThinking) {
+                    Logger.log('Thinking Stopped (ccreq Trigger)', 'VSCodeCopilotDetector');
+                    this.isThinking = false;
+                }
+            }
         }
     }
 

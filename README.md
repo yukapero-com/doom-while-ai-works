@@ -58,6 +58,8 @@ Doom works by hooking into Cursor's `hooks.json`. Add the following `beforeSubmi
 
 2.  **Add the JSON configuration:**
 
+**macOS / Linux:**
+
     ```json
     {
       "version": 1,
@@ -76,7 +78,26 @@ Doom works by hooking into Cursor's `hooks.json`. Add the following `beforeSubmi
     }
     ```
 
-    *   **Windows Users**: Replace `~/.cursor/ai_thinking.txt` with `%USERPROFILE%\.cursor\ai_thinking.txt`.
+    **Windows (Command Prompt / PowerShell):**
+
+    ```json
+    {
+      "version": 1,
+      "hooks": {
+        "beforeSubmitPrompt": [
+          {
+            "command": "cmd /c echo thinking > \"%USERPROFILE%\\.cursor\\ai_thinking.txt\""
+          }
+        ],
+        "stop": [
+          {
+            "command": "cmd /c echo idle > \"%USERPROFILE%\\.cursor\\ai_thinking.txt\""
+          }
+        ]
+      }
+    }
+    ```
+
     *   **Tip**: Launch the extension and click **"Show Instructions"** to get a copy-paste ready JSON with your absolute path.
 
 #### Antigravity
