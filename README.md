@@ -10,7 +10,7 @@
 
 > **"Productivity is overrated. Demon slaying is eternal."**
 
-![Doom While AI Works Demo Placeholder](https://via.placeholder.com/800x450.png?text=Brave+Demon+Slayer+Waiting+for+AI+Response)
+<img src="media/readme/demo.gif" alt="Doom While AI Works Demo Placeholder" width="100%" />
 
 Tired of staring at that spinning "AI is thinking..." bubble? It's time to slay demons.
 
@@ -27,6 +27,8 @@ Tired of staring at that spinning "AI is thinking..." bubble? It's time to slay 
 ### Usage & Controls
 
 The extension adds a status bar item to your IDE, giving you full control over the demon slaying.
+
+> **Note**: Currently, saving the game is only supported via the in-game menu (accessible by pressing `ESC`).
 
 | State | Icon | Description |
 | :--- | :--- | :--- |
@@ -48,13 +50,34 @@ To ensure Doom triggers correctly with **GitHub Copilot**, you must set the log 
 ![Set Log Level Debug](media/readme/set_log_level.gif)
 
 #### Cursor
-Doom works by hooking into Cursor's `hooks.json`. A built-in wizard is provided to make this easy.
+Doom works by hooking into Cursor's `hooks.json`. Add the following `beforeSubmitPrompt` and `stop` hooks to trigger Doom.
 
-1.  Launch the extension in Cursor. You will see a notification: **"Doom While AI Works for Cursor: Setup Hooks..."**.
-2.  Click **"Show Instructions"**.
-3.  A setup guide will open with a JSON snippet.
-4.  Copy the JSON and paste it into your `~/.cursor/hooks.json` file.
-    *   *This hook simply runs a local command (e.g., `echo thinking > state.txt`) to notify us when AI starts/stops.*
+1.  **Open (or create) the configuration file:**
+    *   `~/.cursor/hooks.json` (macOS/Linux)
+    *   `%USERPROFILE%\.cursor\hooks.json` (Windows)
+
+2.  **Add the JSON configuration:**
+
+    ```json
+    {
+      "version": 1,
+      "hooks": {
+        "beforeSubmitPrompt": [
+          {
+            "command": "echo thinking > ~/.cursor/ai_thinking.txt" 
+          }
+        ],
+        "stop": [
+          {
+            "command": "echo idle > ~/.cursor/ai_thinking.txt"
+          }
+        ]
+      }
+    }
+    ```
+
+    *   **Windows Users**: Replace `~/.cursor/ai_thinking.txt` with `%USERPROFILE%\.cursor\ai_thinking.txt`.
+    *   **Tip**: Launch the extension and click **"Show Instructions"** to get a copy-paste ready JSON with your absolute path.
 
 #### Antigravity
 **No setup required.** Just install and slay.

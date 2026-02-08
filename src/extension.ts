@@ -54,9 +54,8 @@ export function activate(context: vscode.ExtensionContext) {
         handleActivity();
     });
     aiDetector.onThinkingStop(() => {
-        // Disabled: Relying on ACTIVITY_TIMEOUT_MS for stopping
-        // Logger.log('Stop Signal Received. Setting to Ready.');
-        // setReady();
+        Logger.log('Stop Signal Received from Detector. Setting to Ready.');
+        setReady();
     });
     aiDetector.start();
 

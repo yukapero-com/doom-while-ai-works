@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 import { IAIStateDetector } from './IAIStateDetector';
 import { Logger } from '../utils/logger';
 
@@ -12,15 +13,26 @@ export class CursorDetector implements IAIStateDetector {
     private onThinkingStopCallback: (() => void) | null = null;
 
     constructor(private context: vscode.ExtensionContext) {
-        // Ensure global storage exists
-        if (!fs.existsSync(this.context.globalStorageUri.fsPath)) {
-            fs.mkdirSync(this.context.globalStorageUri.fsPath, { recursive: true });
+        const cursorDir = path.join(os.homedir(), '.cursor');
+
+        // Ensure .cursor directory exists (it likely does if they use Cursor, but good to be safe)
+        if (!fs.existsSync(cursorDir)) {
+            try {
+                fs.mkdirSync(cursorDir, { recursive: true });
+            } catch (e) {
+                Logger.error('Failed to create .cursor directory', e, 'CursorDetector');
+            }
         }
-        this.stateFilePath = path.join(this.context.globalStorageUri.fsPath, 'cursor_ai_state.txt');
+
+        this.stateFilePath = path.join(cursorDir, 'ai_thinking.txt');
 
         // Initialize state file if not exists
         if (!fs.existsSync(this.stateFilePath)) {
-            fs.writeFileSync(this.stateFilePath, 'idle');
+            try {
+                fs.writeFileSync(this.stateFilePath, 'idle');
+            } catch (e) {
+                Logger.error('Failed to create state file', e, 'CursorDetector');
+            }
         }
     }
 
@@ -70,6 +82,10 @@ export class CursorDetector implements IAIStateDetector {
         }
     }
 
+    private heartbeatInterval: NodeJS.Timeout | null = null;
+    private stopDebounceTimer: NodeJS.Timeout | null = null;
+    private readonly STOP_DEBOUNCE_MS = 5000;
+
     private checkState() {
         try {
             if (!fs.existsSync(this.stateFilePath)) {
@@ -77,15 +93,58 @@ export class CursorDetector implements IAIStateDetector {
             }
 
             const content = fs.readFileSync(this.stateFilePath, 'utf8').trim().toLowerCase();
-            Logger.log(`AI State Change: ${content}`, 'CursorDetector');
 
             if (content === 'thinking') {
-                if (this.onThinkingStartCallback) this.onThinkingStartCallback();
-            } else if (content === 'idle') {
-                if (this.onThinkingStopCallback) this.onThinkingStopCallback();
+                // If we were pending stop, cancel it
+                if (this.stopDebounceTimer) {
+                    clearTimeout(this.stopDebounceTimer);
+                    this.stopDebounceTimer = null;
+                    Logger.log('Resumed thinking (debounce cancelled)', 'CursorDetector');
+                }
+
+                // Ensure heartbeat is running
+                if (!this.heartbeatInterval) {
+                    Logger.log('AI Thinking started (Heartbeat active)', 'CursorDetector');
+                    this.startHeartbeat();
+                }
+            } else {
+                // If currently "thinking" (heartbeat active) and not yet debouncing stop
+                if (this.heartbeatInterval && !this.stopDebounceTimer) {
+                    Logger.log(`AI Idle detected. Starting ${this.STOP_DEBOUNCE_MS}ms debounce timer...`, 'CursorDetector');
+
+                    this.stopDebounceTimer = setTimeout(() => {
+                        Logger.log('Debounce finished. Stopping AI state.', 'CursorDetector');
+                        this.stopHeartbeat();
+                        if (this.onThinkingStopCallback) {
+                            this.onThinkingStopCallback();
+                        }
+                        this.stopDebounceTimer = null;
+                    }, this.STOP_DEBOUNCE_MS);
+                }
             }
         } catch (e) {
             Logger.error('Error reading state file', e, 'CursorDetector');
+            this.stopHeartbeat();
+        }
+    }
+
+    private startHeartbeat() {
+        if (this.onThinkingStartCallback) {
+            this.onThinkingStartCallback();
+        }
+
+        // Send a signal every 1 second to keep the extension alive
+        this.heartbeatInterval = setInterval(() => {
+            if (this.onThinkingStartCallback) {
+                this.onThinkingStartCallback();
+            }
+        }, 1000);
+    }
+
+    private stopHeartbeat() {
+        if (this.heartbeatInterval) {
+            clearInterval(this.heartbeatInterval);
+            this.heartbeatInterval = null;
         }
     }
 
