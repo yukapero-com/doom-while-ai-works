@@ -11,7 +11,7 @@
 > **"Productivity is overrated. Demon slaying is eternal."**
 
 <p align="center">
-  <img src="media/readme/demo.gif" alt="Doom While AI Works Demo Placeholder" width="70%" />
+  <img src="https://raw.githubusercontent.com/yukapero-com/doom-while-ai-works/main/media/readme/demo.gif" alt="Doom While AI Works Demo Placeholder" width="70%" />
 </p> 
 
 Tired of staring at that spinning "AI is thinking..." bubble? It's time to slay demons.
@@ -34,8 +34,8 @@ The extension adds a status bar item to your IDE, giving you full control over t
 
 | State | Icon | Description |
 | :--- | :--- | :--- |
-| **ON** | ![Doom ON](media/readme/doom_on.png) | **Ready to Slay.** The game will automatically launch when AI starts thinking. Click to disable. |
-| **OFF** | ![Doom OFF](media/readme/doom_off.png) | **Peaceful Mode.** Automatic launch is disabled. Click to enable. |
+| **ON** | ![Doom ON](https://raw.githubusercontent.com/yukapero-com/doom-while-ai-works/main/media/readme/doom_on.png) | **Ready to Slay.** The game will automatically launch when AI starts thinking. Click to disable. |
+| **OFF** | ![Doom OFF](https://raw.githubusercontent.com/yukapero-com/doom-while-ai-works/main/media/readme/doom_off.png) | **Peaceful Mode.** Automatic launch is disabled. Click to enable. |
 
 ---
 
@@ -49,7 +49,7 @@ To ensure Doom triggers correctly with **GitHub Copilot**, you must set the log 
 3.  Select `GitHub Copilot Chat`.
 4.  Select `Debug` and click the **double checkmark icon** on the right to "Set as Default Log Level".
 
-![Set Log Level Debug](media/readme/set_log_level.gif)
+![Set Log Level Debug](https://raw.githubusercontent.com/yukapero-com/doom-while-ai-works/main/media/readme/set_log_level.gif)
 
 #### Cursor
 Doom works by hooking into Cursor's `hooks.json`. Add the following `beforeSubmitPrompt` and `stop` hooks to trigger Doom.
