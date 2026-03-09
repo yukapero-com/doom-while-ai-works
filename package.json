@@ -2,7 +2,7 @@
   "name": "doom-while-ai-works",
   "displayName": "Doom While AI Works",
   "description": "Play Doom while AI is thinking in VS Code, Cursor, or Antigravity.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.90.0"
   },
