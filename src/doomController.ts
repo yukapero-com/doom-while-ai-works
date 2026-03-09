@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { Logger } from './utils/logger';
 
 export class DoomController {
   private _panel: vscode.WebviewPanel | undefined;
@@ -62,10 +63,10 @@ export class DoomController {
       async message => {
         switch (message.command) {
           case 'log':
-            console.log('[WebView]', message.text);
+            Logger.log(message.text, 'WebView');
             break;
           case 'error':
-            console.error('[WebView Error]', message.text);
+            Logger.error(message.text, undefined, 'WebView');
             vscode.window.showErrorMessage('Doom WebView Error: ' + message.text);
             break;
           case 'restoreAndFocusChat':
@@ -98,7 +99,7 @@ export class DoomController {
   public stop() {
     if (this._panel) {
       this._sendGameCommand('pause');
-      // 思考中はフォーカスをエディタに戻すことで「裏でプレイさせない」感を出す
+      // Return focus to editor during pause to prevent background play feel
     }
   }
 
@@ -150,7 +151,7 @@ export class DoomController {
       if (fs.existsSync(sfxPathDisk)) {
         sfxFiles = fs.readdirSync(sfxPathDisk).filter(f => f.endsWith('.wav'));
       }
-    } catch (e) { console.error("Error scanning sfx:", e); }
+    } catch (e) { Logger.error("Error scanning sfx", e, 'DoomController'); }
     const sfxListJson = JSON.stringify(sfxFiles);
     const sfxBaseUri = webview.asWebviewUri(vscode.Uri.joinPath(wasmPath, 'sfx'));
 
@@ -161,7 +162,7 @@ export class DoomController {
       if (fs.existsSync(musicPathDisk)) {
         musicFiles = fs.readdirSync(musicPathDisk).filter(f => /\.(mp3|ogg|wav|opus|m4a|aac|flac)$/i.test(f));
       }
-    } catch (e) { console.error("Error scanning music:", e); }
+    } catch (e) { Logger.error("Error scanning music", e, 'DoomController'); }
     const musicListJson = JSON.stringify(musicFiles);
     const musicBaseUri = webview.asWebviewUri(vscode.Uri.joinPath(wasmPath, 'music'));
 

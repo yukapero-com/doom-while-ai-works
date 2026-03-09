@@ -99,7 +99,7 @@ export class AntigravityDetector implements IAIStateDetector {
             this.lastLogTime = Date.now();
         }
 
-        // [DEBUG MODE] Output EVERYTHING to console
+        // Process lines
         const lines = chunk.split(/\r?\n/);
         for (const line of lines) {
             if (line.trim().length > 0) {
@@ -108,7 +108,7 @@ export class AntigravityDetector implements IAIStateDetector {
                     continue;
                 }
 
-                Logger.log(`RAW LOG: ${line.trim()}`, 'AntigravityDetector');
+                // Logger.log(`RAW LOG: ${line.trim()}`, 'AntigravityDetector'); // Keep commented or remove for production unless needed
 
                 // 1. Check for User Intent (Start of Turn)
                 if (line.includes('Requesting planner')) {
@@ -186,7 +186,7 @@ export class AntigravityDetector implements IAIStateDetector {
     private checkWatchdog() {
         if (!this.activePid) return;
 
-        // Watchdog: 10秒間ログ更新がない場合は終了と判定
+        // Watchdog: Force stop if no log updates for 10 seconds
         const LOG_TIMEOUT_MS = 10000;
 
         if (Date.now() - this.lastLogTime > LOG_TIMEOUT_MS) {

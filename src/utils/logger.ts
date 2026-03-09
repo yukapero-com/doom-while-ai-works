@@ -13,8 +13,13 @@ export class Logger {
         const timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
         const formattedMessage = `[${timestamp}] [${prefix}] ${message}`;
 
-        // Console still useful for extension development
-        console.log(formattedMessage);
+        const config = vscode.workspace.getConfiguration('doom-while-ai-works');
+        const isDebug = config.get<boolean>('debug', false);
+
+        // Console only if debug is enabled
+        if (isDebug) {
+            console.log(formattedMessage);
+        }
 
         if (this.outputChannel) {
             this.outputChannel.appendLine(formattedMessage);
