@@ -10,7 +10,9 @@
 
 > **"Productivity is overrated. Demon slaying is eternal."**
 
-<img src="media/readme/demo.gif" alt="Doom While AI Works Demo Placeholder" width="100%" />
+<p align="center">
+  <img src="media/readme/demo.gif" alt="Doom While AI Works Demo Placeholder" width="70%" />
+</p> 
 
 Tired of staring at that spinning "AI is thinking..." bubble? It's time to slay demons.
 
@@ -58,7 +60,7 @@ Doom works by hooking into Cursor's `hooks.json`. Add the following `beforeSubmi
 
 2.  **Add the JSON configuration:**
 
-**macOS / Linux:**
+    **macOS / Linux:**
 
     ```json
     {
@@ -97,8 +99,6 @@ Doom works by hooking into Cursor's `hooks.json`. Add the following `beforeSubmi
       }
     }
     ```
-
-    *   **Tip**: Launch the extension and click **"Show Instructions"** to get a copy-paste ready JSON with your absolute path.
 
 #### Antigravity
 **No setup required.** Just install and slay.
@@ -144,18 +144,25 @@ Here is exactly how detection works for each platform:
     *   It triggers based on generic system events like `Requesting planner`.
 
 You can audit our full detection source code here:
-👉 **[src/detectors](https://github.com/Yukapero/doom-for-ai-chat/tree/main/src/detectors)**
+👉 **[src/detectors](https://github.com/yukapero-com/doom-while-ai-works/tree/main/src/detectors)**
 
 ---
-
-
 
 ### Contributing
 
 Bugs? Feature requests? PRs?
 I welcome them all. Help make the wait time even more violent.
 
-👉 **[GitHub Repository](https://github.com/Yukapero/doom-for-ai-chat)**
+👉 **[GitHub Repository](https://github.com/yukapero-com/doom-while-ai-works)**
+
+---
+
+### 💊 Need a Mental Health Pack?
+
+**Tired of ripping and tearing?**  
+Slaying demons while waiting for AI can be exhausting. If you need to restore your "HP" and find some peace, check out my latest healing app:
+
+👉 **[Floating Cat Videos - Sumineko](https://yukapero.com/en/sumineko)**
 
 ---
 
